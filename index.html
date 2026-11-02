@@ -153,12 +153,42 @@ function render0(){
  home()}
 
 function home(){
- $('#app').innerHTML=`<div class="row sp" style="flex-wrap:nowrap"><button class="g" id="mn" style="font-size:20px;padding:8px 14px">☰</button><div style="flex:1;min-width:0;text-align:center"><img src="${LOGO}" alt="Rythu Diary" style="height:40px;width:auto;vertical-align:middle"><div class="mu" id="st" style="font-size:11px">${S.user.cloud?ST:'📱 ఈ ఫోన్ లో మాత్రమే'}</div></div><div id="pf" class="sm" style="cursor:pointer">${avatar(S.profile)}</div></div>
- ${profCard()}<h2 style="margin:14px 0 4px">🌾 నా పంటలు</h2>${S.crops.length?S.crops.map(c=>{const s=stats(c);return `<div class="card crop-card" data-id="${c.id}" style="cursor:pointer"><div class="row sp"><h2>${esc(c.name)}</h2><span class="b">${days(c.sowDate)} రోజులు</span></div><div class="mu">విత్తిన తేదీ: ${fd(c.sowDate)} · ${c.entries.length} నమోదులు</div><div class="mu">ఖర్చు ${rs(s.sp)} · ఆదాయం ${rs(s.inc)}</div>${lastLine(c)}</div>`}).join(''):'<div class="card mu">ఇంకా పంట లేదు. కింద "+ కొత్త పంట" నొక్కండి. ఇప్పటికే వేసిన పంట అయితే అసలు విత్తిన తేదీ పెట్టండి – రోజులు ఆటోమేటిక్ గా లెక్కిస్తుంది.</div>'}
+ $('#app').innerHTML=`
+<div class="hdr" style="padding-bottom:20px">
+  <div class="row sp" style="flex-wrap:nowrap;margin-bottom:12px">
+    <button class="g" id="mn" style="font-size:20px;padding:8px 12px;border-radius:12px;background:rgba(255,255,255,.18);border:1px solid rgba(255,255,255,.25)">☰</button>
+    <div style="flex:1;min-width:0;padding:0 8px">
+      <div style="font-size:15px;font-weight:600;opacity:.95">నమస్కారం</div>
+      <div class="mu" id="st" style="font-size:12px;opacity:.85;margin-top:1px">${S.user.cloud?ST:'📱 ఈ ఫోన్ లో మాత్రమే'}</div>
+    </div>
+    <div id="pf" style="cursor:pointer">${avatar(S.profile)}</div>
+  </div>
+
+  <div style="background:rgba(255,255,255,.14);border-radius:16px;padding:14px 14px 12px;backdrop-filter:blur(4px)">
+    <div class="row sp">
+      <div>
+        <div style="font-size:13px;opacity:.9">మహబూబాబాద్</div>
+        <div style="font-size:34px;font-weight:700;line-height:1.1;margin:2px 0">32°C</div>
+        <div style="font-size:13px;opacity:.9">మేఘావృతం</div>
+      </div>
+      <div style="font-size:48px;line-height:1">☁️</div>
+    </div>
+    <div class="row" style="margin-top:12px;gap:14px;font-size:12.5px;opacity:.95;flex-wrap:nowrap">
+      <div>💧 65%</div>
+      <div>💨 12km/h</div>
+      <div>🌅 6:20</div>
+      <div>🌇 5:45</div>
+    </div>
+    <div style="margin-top:10px;font-size:12.5px;background:rgba(255,255,255,.18);padding:7px 10px;border-radius:10px">
+      నేడు పురుగు మందులు వేయడానికి అనుకూలం
+    </div>
+  </div>
+</div>
+ <h2 style="margin:14px 0 4px">🌾 నా పంటలు</h2>${S.crops.length?S.crops.map(c=>{const s=stats(c);return `<div class="card crop-card" data-id="${c.id}" style="cursor:pointer"><div class="row sp"><h2>${esc(c.name)}</h2><span class="b">${days(c.sowDate)} రోజులు</span></div><div class="mu">విత్తిన తేదీ: ${fd(c.sowDate)} · ${c.entries.length} నమోదులు</div><div class="mu">ఖర్చు ${rs(s.sp)} · ఆదాయం ${rs(s.inc)}</div>${lastLine(c)}</div>`}).join(''):'<div class="card mu">ఇంకా పంట లేదు. కింద "+ కొత్త పంట" నొక్కండి. ఇప్పటికే వేసిన పంట అయితే అసలు విత్తిన తేదీ పెట్టండి – రోజులు ఆటోమేటిక్ గా లెక్కిస్తుంది.</div>'}
  <div class="mu" style="text-align:center;margin:24px 0 70px">రైతు డైరీ · వెర్షన్ 14</div>
  <button class="fab" id="ac">+ కొత్త పంట</button>`;
  document.querySelectorAll('[data-id]').forEach(e=>e.onclick=()=>{cur=e.dataset.id;tab='t';render()});
- $('#ac').onclick=()=>cropForm();$('#pf').onclick=profView;$('#pcard').onclick=profView;$('#mn').onclick=menu;
+ $('#ac').onclick=()=>cropForm();$('#pf').onclick=profView;$('#mn').onclick=menu;
 }
 const L=(en,te)=>LANG==='en'?en:te;
 const WC=c=>c===0?['☀️','Clear','నిర్మలం']:c<=3?['⛅','Partly cloudy','మేఘావృతం']:c<=48?['🌫️','Fog','పొగమంచు']:c<=57?['🌦️','Drizzle','చినుకులు']:c<=67?['🌧️','Rain','వర్షం']:c<=77?['❄️','Snow','మంచు']:c<=82?['🌧️','Showers','జల్లులు']:['⛈️','Thunderstorm','ఉరుములతో వర్షం'];
@@ -346,7 +376,22 @@ function labelGuide(){const def='PYRIPROXYFEN 5% + DIAFENTHIURON 25% SE';
  m.querySelector('#lbb').onclick=()=>{m.querySelector('#lbo').innerHTML=labelOut(m.querySelector('#lbi').value)};m.querySelector('#lbx').onclick=()=>m.remove()}
 function menu(){
  const bt='style="width:100%;margin:4px 0;text-align:left"';
- const m=modal(`<div class="row" style="flex-wrap:nowrap"><img src="${LOGO}" alt="" style="height:36px;width:auto"><h2 style="margin:0">☰ మెనూ</h2></div><div class="mu">${esc(S.user.name)}</div><div class="mu">${S.user.cloud?ST:'📱 ఈ ఫోన్ లో మాత్రమే'}</div><hr style="border:0;border-top:1px solid var(--bd);margin:10px 0"><button class="g" id="m1" ${bt}>👤 నా ప్రొఫైల్</button><button class="g" id="m13" ${bt}>🌿 ${L('Bio vs Chemical products','బయో vs రసాయన ఉత్పత్తులు')}</button><button class="g" id="m14" ${bt}>🔎 ${L('Bio or Non-bio?','బయోనా, నాన్-బయోనా?')}</button><button class="g" id="m15" ${bt}>🏷️ ${L('Understand product labels','ఉత్పత్తి లేబుల్ అర్థం')}</button><button class="g" id="m11" ${bt}>🧬 FRAC · IRAC · HRAC · N-IRAC</button><button class="g" id="m12" ${bt}>📒 ${L('Notepad','నోట్‌ప్యాడ్')}</button><button class="g" id="m7" ${bt}>🌦️ ${L('Weather & Rain','వాతావరణం & వర్షం')}</button><button class="g" id="m8" ${bt}>📅 ${L('Farm Calendar','రైతు క్యాలెండర్')}</button><button class="d" id="m9" style="width:100%;text-align:left;padding:10px 14px;margin:4px 0">🗑️ ${L('Delete a crop','పంట తొలగించు')}</button><div class="row" style="margin:8px 0">🌐 Language <button class="${LANG==='en'?'':'g'}" id="ls1" style="padding:6px 12px">English</button><button class="${LANG==='te'?'':'g'}" id="ls2" style="padding:6px 12px">తెలుగు</button></div><button class="g" id="m10" ${bt}>📸 ${L('Contact','సంప్రదించండి')}</button><button class="g" id="m2" ${bt}>💾 Backup డౌన్లోడ్</button><button class="g" id="m3" ${bt}>♻️ Restore (ఫైల్ నుండి)</button><input type="file" id="rf" accept=".json" style="display:none"><button class="g" id="m4" ${bt}>🚪 Logout</button>`);
+ const m=modal(`<div class="row" style="flex-wrap:nowrap"><img src="${LOGO}" alt="" style="height:36px;width:auto"><h2 style="margin:0">☰ మెనూ</h2></div>
+<div style="background:var(--soft);border-radius:14px;padding:12px;margin:8px 0 4px">
+  <div style="display:flex;gap:12px;align-items:center">
+    <div>${avatar(S.profile)}</div>
+    <div style="flex:1;min-width:0">
+      <div style="font-weight:700;font-size:15px">${esc((S.profile&&S.profile.name)||S.user.name||'రైతు')}</div>
+      <div class="mu" style="font-size:12.5px;margin-top:2px">${esc(S.user.name||'')}</div>
+    </div>
+  </div>
+  ${(S.profile&&S.profile.mobile)?`<div class="mu" style="margin-top:8px">📞 ${esc(S.profile.mobile)}</div>`:''}
+  ${(S.profile&&S.profile.wa)?`<div class="mu">💬 WhatsApp: ${esc(S.profile.wa)}</div>`:''}
+  ${(S.profile&&(S.profile.village||S.profile.mandal||S.profile.district))?`<div class="mu">📍 ${esc([S.profile.village,S.profile.mandal,S.profile.district].filter(Boolean).join(', '))}</div>`:''}
+  <div class="mu" style="margin-top:4px">${S.user.cloud?ST:'📱 ఈ ఫోన్ లో మాత్రమే'}</div>
+</div>
+<hr style="border:0;border-top:1px solid var(--bd);margin:10px 0">
+<button class="g" id="m1" ${bt}>👤 నా ప్రొఫైల్</button><button class="g" id="m13" ${bt}>🌿 ${L('Bio vs Chemical products','బయో vs రసాయన ఉత్పత్తులు')}</button><button class="g" id="m14" ${bt}>🔎 ${L('Bio or Non-bio?','బయోనా, నాన్-బయోనా?')}</button><button class="g" id="m15" ${bt}>🏷️ ${L('Understand product labels','ఉత్పత్తి లేబుల్ అర్థం')}</button><button class="g" id="m11" ${bt}>🧬 FRAC · IRAC · HRAC · N-IRAC</button><button class="g" id="m12" ${bt}>📒 ${L('Notepad','నోట్‌ప్యాడ్')}</button><button class="g" id="m7" ${bt}>🌦️ ${L('Weather & Rain','వాతావరణం & వర్షం')}</button><button class="g" id="m8" ${bt}>📅 ${L('Farm Calendar','రైతు క్యాలెండర్')}</button><button class="d" id="m9" style="width:100%;text-align:left;padding:10px 14px;margin:4px 0">🗑️ ${L('Delete a crop','పంట తొలగించు')}</button><div class="row" style="margin:8px 0">🌐 Language <button class="${LANG==='en'?'':'g'}" id="ls1" style="padding:6px 12px">English</button><button class="${LANG==='te'?'':'g'}" id="ls2" style="padding:6px 12px">తెలుగు</button></div><button class="g" id="m10" ${bt}>📸 ${L('Contact','సంప్రదించండి')}</button><button class="g" id="m2" ${bt}>💾 Backup డౌన్లోడ్</button><button class="g" id="m3" ${bt}>♻️ Restore (ఫైల్ నుండి)</button><input type="file" id="rf" accept=".json" style="display:none"><button class="g" id="m4" ${bt}>🚪 Logout</button>`);
  const d=m.firstElementChild;m.style.alignItems='stretch';m.style.justifyContent='flex-start';d.style.cssText+=';width:82%;max-width:320px;max-height:100%;height:100%;border-radius:0 18px 18px 0';
  const q=s=>m.querySelector(s);
  q('#m1').onclick=()=>{m.remove();profView()};q('#m7').onclick=()=>{m.remove();wxForm()};q('#m8').onclick=()=>{m.remove();calForm()};q('#m9').onclick=()=>{m.remove();delForm()};q('#m10').onclick=()=>{m.remove();contactForm()};q('#m11').onclick=()=>{m.remove();rcForm()};q('#m12').onclick=()=>{m.remove();padForm()};q('#m13').onclick=()=>{m.remove();bioChem()};q('#m14').onclick=()=>{m.remove();bioId()};q('#m15').onclick=()=>{m.remove();labelGuide()};q('#ls1').onclick=()=>setLang('en');q('#ls2').onclick=()=>setLang('te');
